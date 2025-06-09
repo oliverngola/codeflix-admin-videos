@@ -8,7 +8,7 @@ type Props = {
   isLoading?: boolean
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleToggle: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 }
 
 export function CategoryForm({
@@ -17,11 +17,11 @@ export function CategoryForm({
   isLoading = false,
   handleChange,
   handleToggle,
-  onSubmit
+  handleSubmit
 }: Props) {
   return (
     <Box p={2}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControl fullWidth>
