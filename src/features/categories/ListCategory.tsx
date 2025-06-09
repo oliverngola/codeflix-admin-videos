@@ -7,6 +7,12 @@ import { selectCategories } from './categorySlice'
 
 export const ListCategory = () => {
   const categories = useAppSelector(selectCategories)
+  const componentProps = {
+    toolbar: {
+      showQuickFilter: true,
+      quickFilterProps: { debounceMs: 500 },
+    },
+  }
 
   const rows: GridRowsProp = categories.map((category) => ({
     id: category.id,
@@ -21,6 +27,7 @@ export const ListCategory = () => {
       field: 'name',
       headerName: 'Name', 
       flex: 1,
+      renderCell: renderNameCell
     },
     { 
       field: 'description', 
@@ -46,6 +53,19 @@ export const ListCategory = () => {
       renderCell: renderActionsCell
     }
   ];
+
+  function renderNameCell(rowData: GridRenderCellParams) {
+    return (
+      <Link 
+        style={{textDecoration: 'none'}}
+        to={`/categories/edit/${rowData.id}`}
+      >
+        <Typography color="primary">
+          {rowData.value}
+        </Typography>
+      </Link>
+    )
+  }
 
   function renderIsActiveCell(row: GridRenderCellParams) {
     return (
@@ -81,23 +101,19 @@ export const ListCategory = () => {
         </Button>
       </Box>
 
-      <div style={{ height: 300, width: '100%' }}>
+      <Box sx={{ display: "flex", height: 600 }}>
         <DataGrid 
-          components={{ Toolbar: GridToolbar }}
-          rowsPerPageOptions={[2, 5, 10, 20, 30, 40, 50, 100]}
-          disableColumnSelector={true}
-          disableColumnFilter={true}
-          disableDensitySelector={true}
           rows={rows} 
           columns={columns} 
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
+          disableColumnFilter={true}
+          disableColumnSelector={true}
+          disableDensitySelector={true}
+          disableSelectionOnClick={true}
+          componentsProps={componentProps}
+          components={{ Toolbar: GridToolbar }}
+          rowsPerPageOptions={[5, 10, 20, 30, 40, 50, 100]}
         />
-      </div>
+      </Box>
     </Box>
   )
 }
