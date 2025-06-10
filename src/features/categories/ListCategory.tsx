@@ -3,11 +3,14 @@ import { DataGrid, GridRowsProp, GridColDef, GridRenderCellParams, GridToolbar }
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { deleteCategory, selectCategories } from './categorySlice'
+import { useAppDispatch } from '../../app/hooks'
+import { useDeleteCategoryMutation, useGetCategoriesQuery } from './categorySlice'
+import { useEffect } from 'react';
 
 export const ListCategory = () => {
-  const categories = useAppSelector(selectCategories)
+  const { data, isFetching, error } = useGetCategoriesQuery()
+  const [deleteCategory, deleteCategoryStatus] = useDeleteCategoryMutation();
+
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -18,13 +21,13 @@ export const ListCategory = () => {
     },
   }
 
-  const rows: GridRowsProp = categories.map((category) => ({
+  const rows: GridRowsProp = data ? data.data.map((category) => ({
     id: category.id,
     name: category.name,
     description: category.description,
     isActive: category.is_active,
     createdAt: new Date(category.created_at || "").toLocaleDateString("pt-BR"),
-  }));
+  })) : [];
 
   const columns: GridColDef[] = [
     { 
@@ -79,10 +82,17 @@ export const ListCategory = () => {
     )
   }
 
-  function handleDeleteCategory(id: string) {
-    dispatch(deleteCategory(id));
-    enqueueSnackbar('Category deleted successfully!', { variant: 'success' });
+  async function handleDeleteCategory(id: string) {
+    await deleteCategory({ id });
   }
+
+  useEffect(() => {
+    if (deleteCategoryStatus.isSuccess) {
+      enqueueSnackbar('Category deleted successfully!', { variant: 'success' });
+    } else if (deleteCategoryStatus.error) {
+      enqueueSnackbar('Error deleting category!', { variant: 'error' });
+    }
+  }, [deleteCategoryStatus, enqueueSnackbar]);
 
   function renderActionsCell(params: GridRenderCellParams) {
     return (

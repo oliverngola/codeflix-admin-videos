@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
+import { apiSlice } from "../api/apiSlice";
+import { Results, Result } from "../../types/Category";
 
 export interface Category {
   id: string;
@@ -10,6 +12,26 @@ export interface Category {
   created_at: null | string;
   updated_at: null | string;
 }
+
+const endpointUrl = "/categories";
+
+const deleteCategoryMutation = (category: Category) => ({
+  url: `${endpointUrl}/${category.id}`,
+  method: "DELETE",
+});
+
+export const categoriesApiSlice = apiSlice.injectEndpoints({
+  endpoints: ({ query, mutation }) => ({  
+    getCategories: query<Results, void>({
+      query: () => `${endpointUrl}`,
+      providesTags: ["Categories"],
+    }),
+    deleteCategory: mutation<Result, {id: string}>({
+      query: deleteCategoryMutation,
+      invalidatesTags: ["Categories"],
+    })
+  }),
+});
 
 const category: Category = {
   id: "1cb2f8c-4d3e-4f5a-8b1c-9e0f1a2b3c4d",
@@ -70,3 +92,5 @@ export const selectCategoryById = (state: RootState, id: string) => {
 
 export default categoriesSlice.reducer;
 export const { createCategory, updadeCategory, deleteCategory } = categoriesSlice.actions;
+
+export const { useGetCategoriesQuery, useDeleteCategoryMutation } = categoriesApiSlice;
