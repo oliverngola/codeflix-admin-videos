@@ -1,13 +1,15 @@
 import { Box, Button, IconButton, Typography } from '@mui/material'
 import { DataGrid, GridRowsProp, GridColDef, GridRenderCellParams, GridToolbar } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { deleteCategory, selectCategories } from './categorySlice'
 
 export const ListCategory = () => {
   const categories = useAppSelector(selectCategories)
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const componentProps = {
     toolbar: {
@@ -79,6 +81,7 @@ export const ListCategory = () => {
 
   function handleDeleteCategory(id: string) {
     dispatch(deleteCategory(id));
+    enqueueSnackbar('Category deleted successfully!', { variant: 'success' });
   }
 
   function renderActionsCell(params: GridRenderCellParams) {
