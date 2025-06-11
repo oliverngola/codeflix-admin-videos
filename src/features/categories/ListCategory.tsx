@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useDeleteCategoryMutation, useGetCategoriesQuery } from './categorySlice'
@@ -12,20 +12,27 @@ export const ListCategory = () => {
   const [search, setSearch] = useState('');
   const [rowsPerPage] = useState([5, 10, 25, 50, 100]);
 
-  const { data, isFetching, error } = useGetCategoriesQuery()
+  const options = { perPage, page, search };
+
+  const { data, isFetching, error } = useGetCategoriesQuery(options)
   const [deleteCategory, deleteCategoryStatus] = useDeleteCategoryMutation();
   const { enqueueSnackbar } = useSnackbar();
 
   function handleOnPageChange(page: number) {
-    console.log(`Page changed to: ${page}`);
+    setPage(page + 1);
   }
 
   function handleFilterChange(filterModel: GridFilterModel) {
-    console.log('Filter changed:', filterModel);
+    if (filterModel.quickFilterValues?.length) {
+      const search = filterModel.quickFilterValues.join("")
+      setSearch(search);
+    } else {
+      setSearch("");
+    }
   }
 
   function handleOnPageSizeChange(perPage: number) {
-    console.log(`Page size changed to: ${perPage}`);
+    setPerPage(perPage);
   }
 
   async function handleDeleteCategory(id: string) {
@@ -39,6 +46,10 @@ export const ListCategory = () => {
       enqueueSnackbar('Error deleting category!', { variant: 'error' });
     }
   }, [deleteCategoryStatus, enqueueSnackbar]);
+
+  if (error) {
+    return <Typography>Error Fetching Categories</Typography>
+  }
 
   return (
     <Box maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
