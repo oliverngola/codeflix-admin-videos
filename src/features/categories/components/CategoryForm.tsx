@@ -29,7 +29,7 @@ export function CategoryForm({
                 required
                 label="Name"
                 name="name"
-                value={category.name}
+                value={category.name || ""}
                 disabled={isDisabled}
                 onChange={handleChange}
               />
@@ -42,7 +42,7 @@ export function CategoryForm({
                 required
                 label="Description"
                 name="description"
-                value={category.description}
+                value={category.description || ""}
                 disabled={isDisabled}
                 onChange={handleChange}
               />
@@ -56,8 +56,9 @@ export function CategoryForm({
                   <Switch
                     name="is_active"
                     color="secondary"
-                    checked={category.is_active}
+                    checked={category.is_active || false}
                     onChange={handleToggle}
+                    disabled={isDisabled}
                     inputProps={{ 'aria-label': 'controlled' }}
                   />
                 }
@@ -76,9 +77,9 @@ export function CategoryForm({
                 type="submit"
                 variant="contained"
                 color="secondary"
-                disabled={isDisabled}
+                disabled={isDisabled || isLoading}
               >
-                Save
+                {isLoading ? "Loading..." : "Save"}
               </Button>
             </Box>
           </Grid>
