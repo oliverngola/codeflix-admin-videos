@@ -1,16 +1,6 @@
 import { apiSlice } from "../api/apiSlice";
 import { Results, Result, CastMemberParams, CastMember } from "../../types/CastMembers";
 
-export interface CastMembers {
-  id: string;
-  name: string;
-  description: string | null;
-  is_active: boolean;
-  deleted_at: null | string;
-  created_at: null | string;
-  updated_at: null | string;
-}
-
 const endpointUrl = "/cast_members";
 
 export const initialState: CastMember = {

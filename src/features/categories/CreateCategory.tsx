@@ -1,22 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { Category, useCreateCategoryMutation } from './categorySlice';
+import { Category, initialState, useCreateCategoryMutation } from './categorySlice';
 import { CategoryForm } from './components/CategoryForm';
 
 export const CreateCategory = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [createCategory, status] = useCreateCategoryMutation()
   const [isDisabled, setIsDisabled] = useState(false);
-  const [categoryState, setCategoryState] = useState<Category>({
-    id: "",
-    name: "",
-    description: "",
-    is_active: false,
-    deleted_at: null,
-    created_at: "",
-    updated_at: "",
-  })
+  const [categoryState, setCategoryState] = useState<Category>(initialState)
   
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

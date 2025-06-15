@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import { Box, Paper, Typography } from '@mui/material'
 import { useSnackbar } from 'notistack';
-import { Category, useGetCategoryQuery, useUpdateCategoryMutation } from './categorySlice';
+import { Category, initialState, useGetCategoryQuery, useUpdateCategoryMutation } from './categorySlice';
 import { CategoryForm } from './components/CategoryForm';
 
 export const EditCategory = () => {
@@ -11,15 +11,7 @@ export const EditCategory = () => {
   const { data: category, isFetching } = useGetCategoryQuery({ id });
   const [isDisabled, setIsDisabled] = useState(false);
   const [updateCategory, status] = useUpdateCategoryMutation();
-  const [categoryState, setCategoryState] = useState<Category>({
-    id: "",
-    name: "",
-    description: "",
-    is_active: false,
-    deleted_at: null,
-    created_at: "",
-    updated_at: "",
-  });
+  const [categoryState, setCategoryState] = useState<Category>(initialState);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
