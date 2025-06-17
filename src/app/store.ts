@@ -5,9 +5,9 @@ import {
   PreloadedState,
   ThunkAction,
 } from "@reduxjs/toolkit";
-import { apiSlice } from '../features/api/apiSlice';
-import { categoriesApiSlice } from '../features/categories/categorySlice';
-import { castMembersApiSlice } from '../features/cast/castMembersSlice';
+import { apiSlice } from "../features/api/apiSlice";
+import { castMembersApiSlice } from "../features/cast/castMembersSlice";
+import { categoriesApiSlice } from "../features/categories/categorySlice";
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -21,8 +21,7 @@ export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     preloadedState,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(apiSlice.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   });
 };
 
