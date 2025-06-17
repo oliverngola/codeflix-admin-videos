@@ -9,7 +9,7 @@ import { EditCategory } from './features/categories/EditCategory';
 import { SnackbarProvider } from 'notistack';
 import { ListCastMembers } from './features/cast/ListCastMembers';
 import { CreateCastMember } from './features/cast/CreateCastMember';
-import { EditCastMember } from './features/cast/EdiCastMember';
+import { EditCastMember } from './features/cast/EditCastMember';
 
 function App() {
   return (
