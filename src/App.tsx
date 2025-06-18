@@ -13,6 +13,9 @@ import { EditCastMember } from './features/cast/EditCastMember';
 import { CreateGenre } from './features/genre/CreateGenre';
 import { EditGenre } from './features/genre/EditGenre';
 import { ListGenre } from './features/genre/ListGenre';
+import { CreateVideo } from './features/videos/CreateVideo';
+import { EditVideo } from './features/videos/EditVideo';
+import { ListVideo } from './features/videos/ListVideo';
 
 function App() {
   return (
@@ -44,6 +47,9 @@ function App() {
               <Route path='/genres' element={<ListGenre />} />
               <Route path='/genres/create' element={<CreateGenre />} />
               <Route path='/genres/edit/:id' element={<EditGenre />} />
+              <Route path='/videos' element={<ListVideo />} />
+              <Route path='/videos/create' element={<CreateVideo />} />
+              <Route path='/videos/edit/:id' element={<EditVideo />} />
               <Route path='*' element={
                 <Box sx={{color: "white"}}>
                   <Typography variant="h1">404</Typography>
