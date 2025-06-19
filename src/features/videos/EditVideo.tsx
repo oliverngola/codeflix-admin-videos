@@ -9,10 +9,10 @@ import {
   useGetVideoQuery,
   initialState,
   useUpdateVideoMutation,
-  useGetAllCategoriesQuery,
   useGetAllGenresQuery,
   useGetAllCastMembersQuery,
 } from "./videoSlice";
+import { useUniqueCategories } from "../../hooks/useUniqueCategories";
 
 export function EditVideo() {
   const id = useParams<{ id: string }>().id as string;
@@ -20,9 +20,9 @@ export function EditVideo() {
   const { data: video, isFetching } = useGetVideoQuery({ id });
   const [videoState, setVideoState] = useState<Video>(initialState);
   const [updateVideo, status] = useUpdateVideoMutation();
-  const { data: categories } = useGetAllCategoriesQuery();
   const { data: genres } = useGetAllGenresQuery();
   const { data: castMembers } = useGetAllCastMembersQuery();
+  const [categories, setCategories] = useUniqueCategories(videoState, setVideoState);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -37,8 +37,9 @@ export function EditVideo() {
   useEffect(() => {
     if (video) {
       setVideoState(video.data);
+      setCategories(video.data.categories || []);
     }
-  }, [video]);
+  }, [video, setCategories]);
 
   useEffect(() => {
     if (status.isSuccess) {
@@ -65,7 +66,7 @@ export function EditVideo() {
           isDisabled={isFetching}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
-          categories={categories?.data}
+          categories={categories}
           genres={genres?.data}
           castMembers={castMembers?.data}
         />
