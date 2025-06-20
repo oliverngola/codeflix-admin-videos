@@ -2,6 +2,11 @@ import { CastMember } from "./CastMembers";
 import { Category } from "./Category";
 import { Genre } from "./Genre";
 
+export type FileObject = {
+  name: string;
+  file: File;
+};
+
 export interface Results {
   data: Video[];
   links: Links;

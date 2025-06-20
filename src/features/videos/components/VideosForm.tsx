@@ -9,11 +9,12 @@ import {
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { AutoCompleteFields } from "../../../components/AutoCompleteFields";
+import { InputFile } from "../../../components/InputFile";
 import { RatingsList } from "../../../components/RatingsList";
 import { CastMember } from "../../../types/CastMembers";
 import { Category } from "../../../types/Category";
 import { Genre } from "../../../types/Genre";
-import { Video } from "../../../types/Video";
+import { FileObject, Video } from "../../../types/Video";
 
 type Props = {
   video: Video;
@@ -24,6 +25,8 @@ type Props = {
   isLoading?: boolean;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleAddFile: ({ name, file }: FileObject) => void;
+  handleRemoveFile: (name: string) => void;
 };
 
 export function VideosForm({
@@ -35,7 +38,41 @@ export function VideosForm({
   isLoading = false,
   handleSubmit,
   handleChange,
+  handleAddFile,
+  handleRemoveFile
 }: Props) {
+  const handleAddThumbnail = (file: File) => {
+    handleAddFile({ name: "thumb_file", file });
+  };
+
+  const handleRemoveThumbnail = () => {
+    handleRemoveFile("thumb_file");
+  };
+
+  const handleAddBanner = (file: File) => {
+    handleAddFile({ name: "banner_file", file });
+  };
+
+  const handleAddTrailer = (file: File) => {
+    handleAddFile({ name: "trailer_file", file });
+  };
+
+  const handleAddVideo = (file: File) => {
+    handleAddFile({ name: "video_file", file });
+  };
+
+  const handleRemoveBanner = () => {
+    handleRemoveFile("banner_file");
+  };
+
+  const handleRemoveTrailer = () => {
+    handleRemoveFile("trailer_file");
+  };
+
+  const handleRemoveVideo = () => {
+    handleRemoveFile("video_file");
+  };
+
   return (
     <Box p={2}>
       <form onSubmit={handleSubmit}>
@@ -147,6 +184,36 @@ export function VideosForm({
               >
                 <RatingsList isDisabled={isDisabled} />
               </RadioGroup>
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputFile
+                onAdd={handleAddThumbnail}
+                onRemove={handleRemoveThumbnail}
+                placeholder="Thumbnail"
+                data-testid="thumbnail-input"
+              />
+              <InputFile
+                onAdd={handleAddBanner}
+                onRemove={handleRemoveBanner}
+                placeholder="Banner"
+                data-testid="banner-input"
+              />
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputFile
+                onAdd={handleAddVideo}
+                onRemove={handleRemoveVideo}
+                placeholder="Video"
+                data-testid="video-input"
+              />
+              <InputFile
+                onAdd={handleAddTrailer}
+                onRemove={handleRemoveTrailer}
+                placeholder="Trailer"
+                data-testid="trailer-input"
+              />
             </FormControl>
           </Grid>
         </Grid>

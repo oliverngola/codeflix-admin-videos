@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Video } from "../../types/Video";
+import { Video, FileObject } from "../../types/Video";
 import { VideosForm } from "./components/VideosForm";
 import { mapVideoToForm } from "./util";
 import {
@@ -23,10 +23,19 @@ export function EditVideo() {
   const { data: genres } = useGetAllGenresQuery();
   const { data: castMembers } = useGetAllCastMembersQuery();
   const [categories, setCategories] = useUniqueCategories(videoState, setVideoState);
+  const [seletedFiles, setSelectedFiles] = useState<FileObject[]>([]);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setVideoState((state) => ({ ...state, [name]: value }));
+  }
+
+  function handleAddFile({ name, file }: FileObject) {
+    setSelectedFiles([...seletedFiles, { name, file }]);
+  }
+
+  function handleRemoveFile(name: string) {
+    setSelectedFiles(seletedFiles.filter((file) => file.name !== name));
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -66,6 +75,8 @@ export function EditVideo() {
           isDisabled={isFetching}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
+          handleAddFile={handleAddFile}
+          handleRemoveFile={handleRemoveFile}
           categories={categories}
           genres={genres?.data}
           castMembers={castMembers?.data}
