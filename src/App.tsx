@@ -15,33 +15,132 @@ import { CreateVideo } from './features/videos/CreateVideo';
 import { EditVideo } from './features/videos/EditVideo';
 import { ListVideo } from './features/videos/ListVideo';
 import { UploadList } from './features/uploads/UploadList';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import Login from './components/Login';
 
 function App() {
   return (
-    <Layout>
-      <UploadList />
-      <Routes>
-        <Route path='' element={<ListCategory />}/>
-        <Route path='/categories' element={<ListCategory />}/>
-        <Route path='/categories/create' element={<CreateCategory />}/>
-        <Route path='/categories/edit/:id' element={<EditCategory />}/>
-        <Route path='/cast-members' element={<ListCastMembers />} />
-        <Route path='/cast-members/create' element={<CreateCastMember />} />
-        <Route path='/cast-members/edit/:id' element={<EditCastMember />} />
-        <Route path='/genres' element={<ListGenre />} />
-        <Route path='/genres/create' element={<CreateGenre />} />
-        <Route path='/genres/edit/:id' element={<EditGenre />} />
-        <Route path='/videos' element={<ListVideo />} />
-        <Route path='/videos/create' element={<CreateVideo />} />
-        <Route path='/videos/edit/:id' element={<EditVideo />} />
-        <Route path='*' element={
-          <Box sx={{color: "white"}}>
-            <Typography variant="h1">404</Typography>
-            <Typography variant="h2">Page Not Found</Typography>
-          </Box>
-        }/>
-      </Routes>
-    </Layout>
+    <div data-testid="app">
+      <Layout>
+        <UploadList />
+        <Routes>
+          <Route path="/" element={<ListCategory />} />
+
+          {/* Login */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Category */}
+          <Route 
+            path='/categories' 
+            element={
+              <ProtectedRoute>
+                <ListCategory />
+              </ProtectedRoute>}
+          />
+          <Route 
+            path='/categories/create' 
+            element={
+              <ProtectedRoute>
+                <CreateCategory />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path='/categories/edit/:id' 
+            element={
+              <ProtectedRoute>
+                <EditCategory />
+              </ProtectedRoute>}
+          />
+
+          {/* Cast Members */}
+          <Route 
+            path='/cast-members' 
+            element={
+              <ProtectedRoute>
+                <ListCastMembers />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path='/cast-members/create' 
+            element={
+              <ProtectedRoute>
+                <CreateCastMember />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path='/cast-members/edit/:id' 
+            element={
+              <ProtectedRoute>
+                <EditCastMember />
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Genres */}
+          <Route 
+            path='/genres' 
+            element={
+              <ProtectedRoute>
+                <ListGenre />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path='/genres/create' 
+            element={
+              <ProtectedRoute>
+                <CreateGenre />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path='/genres/edit/:id' 
+            element={
+              <ProtectedRoute>
+                <EditGenre />
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Videos */}
+          <Route 
+            path='/videos' 
+            element={
+              <ProtectedRoute>
+                <ListVideo />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path='/videos/create' 
+            element={
+              <ProtectedRoute>
+                <CreateVideo />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path='/videos/edit/:id' 
+            element={
+              <ProtectedRoute>
+                <EditVideo />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path='*' element={
+            <Box sx={{color: "white"}}>
+              <Typography variant="h1">404</Typography>
+              <Typography variant="h2">Page Not Found</Typography>
+            </Box>
+          }/>
+        </Routes>
+      </Layout>
+    </div>
   )
 }
 

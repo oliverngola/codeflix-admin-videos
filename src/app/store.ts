@@ -12,6 +12,7 @@ import { videosSlice } from "../features/videos/videoSlice";
 import { genreSlice } from "../features/genre/genreSlice";
 import { uploadReducer } from "../features/uploads/uploadSlice";
 import { uploadQueue } from "../middleware/uploadQueue";
+import { authSlice } from "../features/auth/authSlice";
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   [genreSlice.reducerPath]: apiSlice.reducer,
   // @ts-ignore
   [videosSlice.reducerPath]: apiSlice.reducer,
+  auth: authSlice.reducer,
   uploadSlice: uploadReducer,
 });
 
