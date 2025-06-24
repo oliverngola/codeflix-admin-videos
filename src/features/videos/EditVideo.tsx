@@ -23,7 +23,7 @@ export function EditVideo() {
   const { data: genres } = useGetAllGenresQuery();
   const { data: castMembers } = useGetAllCastMembersQuery();
   const [categories, setCategories] = useUniqueCategories(videoState, setVideoState);
-  const [seletedFiles, setSelectedFiles] = useState<FileObject[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<FileObject[]>([]);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -31,11 +31,11 @@ export function EditVideo() {
   }
 
   function handleAddFile({ name, file }: FileObject) {
-    setSelectedFiles([...seletedFiles, { name, file }]);
+    setSelectedFiles([...selectedFiles, { name, file }]);
   }
 
   function handleRemoveFile(name: string) {
-    setSelectedFiles(seletedFiles.filter((file) => file.name !== name));
+    setSelectedFiles(selectedFiles.filter((file) => file.name !== name));
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

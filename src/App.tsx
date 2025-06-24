@@ -14,10 +14,12 @@ import { ListGenre } from './features/genre/ListGenre';
 import { CreateVideo } from './features/videos/CreateVideo';
 import { EditVideo } from './features/videos/EditVideo';
 import { ListVideo } from './features/videos/ListVideo';
+import { UploadList } from './features/uploads/UploadList';
 
 function App() {
   return (
     <Layout>
+      <UploadList />
       <Routes>
         <Route path='' element={<ListCategory />}/>
         <Route path='/categories' element={<ListCategory />}/>

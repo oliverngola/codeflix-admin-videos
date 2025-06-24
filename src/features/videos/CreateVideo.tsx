@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { nanoid } from "nanoid";
 import { useSnackbar } from "notistack";
+import { Box, Paper, Typography } from "@mui/material";
+import { useAppDispatch } from "../../app/hooks";
 import { Video, FileObject } from "../../types/Video";
+import { addUpload } from "../uploads/uploadSlice";
 import { VideosForm } from "./components/VideosForm";
 import { mapVideoToForm } from "./util";
 import {
@@ -19,28 +22,37 @@ export const CreateVideo = () => {
   const [createVideo, status] = useCreateVideoMutation();
   const [videoState, setVideoState] = useState<Video>(initialState);
   const [categories] = useUniqueCategories(videoState, setVideoState);
-  const [seletedFiles, setSelectedFiles] = useState<FileObject[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<FileObject[]>([]);
+  const dispatch = useAppDispatch();
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setVideoState((state) => ({ ...state, [name]: value }));
   }
 
   function handleAddFile({ name, file }: FileObject) {
-    setSelectedFiles([...seletedFiles, { name, file }]);
+    setSelectedFiles([...selectedFiles, { name, file }]);
   }
 
   function handleRemoveFile(name: string) {
-    setSelectedFiles(seletedFiles.filter((file) => file.name !== name));
+    setSelectedFiles(selectedFiles.filter((file) => file.name !== name));
+  }
+
+  function handleSubmitUploads(videoId: string) {
+    selectedFiles.forEach(({ file, name }) => {
+      const payload = { id: nanoid(), file, videoId, field: name };
+      dispatch(addUpload(payload));
+    });
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const { id, ...payload } = mapVideoToForm(videoState);
     try {
-      await createVideo(payload);
+      const { data } = await createVideo(payload).unwrap();
+      handleSubmitUploads(data.id);
     } catch (e) {
-      console.log(e);
+      enqueueSnackbar(`Error creating Video`, { variant: "error" });
     }
   }
 
