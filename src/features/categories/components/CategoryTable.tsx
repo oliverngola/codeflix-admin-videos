@@ -107,7 +107,7 @@ export function CategoriesTable({
       >
         <DeleteIcon />
       </IconButton>
-    )
+    );
   }
 
   const rows: GridRowsProp = data ? mapDataToGridRows(data) : [];
